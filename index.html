@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weex Ui</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="description" content="A rich interaction, lightweight, high performance UI library.">
+  <link rel="icon" href="https://img.alicdn.com/tfs/TB1kCs_er_I8KJjy1XaXXbsxpXa-419-495.png" type="image/png">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//h5.m.taobao.com/trip/weex-ui/index.min.css">
+</head>
+
+<body>
+<div id="app">Loading...</div>
+<script>
+  window.$docsify = {
+    name: 'Weex Ui',
+    search: 'auto',
+    themeColor: '#F7C242',
+    coverpage: 'docs/_coverpage.md',
+    homepage: 'README.md',
+    loadSidebar: 'docs/_sidebar.md',
+    loadNavbar: 'docs/_navbar.md',
+    auto2top: true,
+    nameLink: {
+      '/cn/': '#/cn/',
+      '/': '#/'
+    },
+    alias: {
+      '/.*/_navbar.md': 'docs/_navbar.md',
+      '/cn/.*/_sidebar.md': 'docs/_sidebar_cn.md',
+      '/packages/.*/_sidebar.md': 'docs/_sidebar.md',
+      '/cn/': 'README_cn.md',
+      '/cn/packages/(.*)/': 'packages/$1/README_cn.md',
+      '/cn/with-weex-toolkit': 'docs/with-weex-toolkit_cn.md',
+      '/cn/faq': 'docs/faq_cn.md',
+      '/cn/who_use': 'docs/who_use.md',
+      '/cn/CHANGELOG': 'CHANGELOG_cn.md',
+      '/cn/CONTRIBUTING': 'CONTRIBUTING_cn.md',
+      '/cn/weex-ui-weex-conf-2018': 'docs/weex-ui-weex-conf-2018',
+      '/cn/weex-ui-report': 'docs/weex-ui-report'
+    },
+    basePath: location.port === '3000' ? '/' : '/weex-ui/',
+    repo: 'alibaba/weex-ui',
+    ga: 'UA-57207999-2',
+    plugins: [
+      function (hook, vm) {
+        hook.beforeEach(function (html) {
+          var url = 'https://github.com/alibaba/weex-ui/blob/master/' + vm.route.file;
+          var github = "<div  data-tooltip-title=\"Star it if you like\" data-tooltip-position=\"top\" class=\"tool-tip\"><iframe src=\"https://ghbtns.com/github-btn.html?user=alibaba&amp;repo=weex-ui&amp;type=watch&amp;count=true\" allowtransparency=\"true\" frameborder=\"0\" scrolling=\"0\" width=\"110\" height=\"20\" style='margin:0 10px -6px'></iframe></div>";
+
+          var editHtml = '<a href='+ url +' data-tooltip-title=\"Correct this doc\" data-tooltip-position=\"top\" class=\"tool-tip\" target=\"_blank\"><img class=\"emoji\" src=\"https://img.alicdn.com/tfs/TB1ica2lcLJ8KJjy0FnXXcFDpXa-128-128.png\" alt=\"Edit\"></a>';
+          return "<div class=\"tool-docs-header\">"
+            + editHtml
+            + github
+            + "</div>"
+            + '\n\n'
+            + html
+            + '\n----\n'
+            + '**Please feel free to use and contribute to the development.**'
+        })
+      },
+      function (hook, vm) {
+        hook.doneEach(function () {
+          var codeBlocks = document.querySelectorAll("pre[v-pre]");
+          codeBlocks.forEach((element, i, obj) => {
+            var button = document.createElement("button");
+            button.appendChild(document.createTextNode("Click to copy"));
+            button.classList.add("docsify-copy-code-button");
+
+            if (vm.config.themeColor) {
+              button.style.background = vm.config.themeColor;
+            }
+
+            button.addEventListener("click", function (event) {
+              var range = document.createRange();
+              var codeBlock = element.querySelector("code");
+              range.selectNode(codeBlock);
+              window.getSelection().addRange(range);
+
+              try {
+                // Now that we've selected the anchor text, execute the copy command
+                var successful = document.execCommand("copy");
+                if (successful) {
+                  button.classList.add("success");
+                  setTimeout(function () {
+                    button.classList.remove("success");
+                  }, 1000);
+                }
+              } catch (err) {
+                button.classList.add("error");
+                setTimeout(function () {
+                  button.classList.remove("error");
+                }, 1000);
+              }
+
+              var selection = window.getSelection();
+              if (typeof selection.removeRange === "function") {
+                selection.removeRange(range);
+              } else if (typeof selection.removeAllRanges === "function") {
+                selection.removeAllRanges();
+              }
+            });
+            element.appendChild(button);
+          });
+        });
+      }]
+  }
+</script>
+<script>
+  if (typeof navigator.serviceWorker !== 'undefined') {
+    navigator.serviceWorker.register('./docs/dist/sw.js')
+  }
+</script>
+<script src="//h5.m.taobao.com/js/trip/weex-ui/docsify.min.js"></script>
+</body>
+</html>
